@@ -9,5 +9,3 @@
 **/node_modules
 **/build
 **/.eslintcache
-/.pnp
-.pnp.js
