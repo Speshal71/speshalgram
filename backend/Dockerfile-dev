@@ -1,0 +1,12 @@
+FROM python:3.9.2-slim-buster
+
+EXPOSE 8000
+
+WORKDIR /app
+
+# prevent from generating bytecode and buffering stdout
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY Pipfile Pipfile.lock ./
+RUN pip install pipenv==2020.11.15 && pipenv install --dev --system

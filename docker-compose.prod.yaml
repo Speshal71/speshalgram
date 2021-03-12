@@ -1,0 +1,59 @@
+version: '3.3'
+
+services: 
+  back:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile-prod
+    command: gunicorn --bind 0.0.0.0:8000 speshalgram.wsgi
+    ports: 
+      - 8000
+    volumes: 
+      - static_data_prod:/resources/static/
+      - media_data_prod:/resources/media/
+    env_file: 
+      - ./backend/environment/.prod.env
+    environment: 
+      - POSTGRES_HOST=db
+    depends_on: 
+      - db
+  
+  db:
+    image: postgres:13-alpine
+    volumes: 
+      - postgres_data_prod:/var/lib/postgresql/data/
+    env_file: 
+      - ./backend/environment/.prod.env
+  
+  front:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-prod
+    ports: 
+      - 3000
+    depends_on: 
+      - back
+    
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile-prod
+    ports: 
+      - 80:80
+      - 8000:8000
+    volumes: 
+      - static_data_prod:/resources/static/
+      - media_data_prod:/resources/media/
+    environment: 
+      - BACK_HOST=back
+      - BACK_PORT=8000
+      - FRONT_HOST=front
+      - FRONT_PORT=3000
+    depends_on: 
+      - back
+      - front
+
+volumes: 
+  postgres_data_prod:
+  static_data_prod:
+  media_data_prod:

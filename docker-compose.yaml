@@ -1,0 +1,48 @@
+version: '3.3'
+
+services: 
+  back:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/app/
+      - media_data:/resources/media/
+    env_file: 
+      - ./backend/environment/.dev.env
+    environment: 
+      - POSTGRES_HOST=db
+    depends_on: 
+      - db
+  
+  db:
+    image: postgres:13-alpine
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data/
+    env_file: 
+      - ./backend/environment/.dev.env
+  
+  front:
+      build:
+        context: ./frontend
+        dockerfile: Dockerfile-dev
+      command: npm start
+      ports:
+        - 3000:3000
+      volumes:
+        - /app/node_modules/
+        - ./frontend:/app/
+      environment:
+        - PORT=3000
+        - CHOKIDAR_USEPOLLING=true
+        - REACT_APP_PROXY_HOST=back
+        - REACT_APP_PROXY_PORT=8000
+      depends_on:
+        - back
+
+volumes: 
+  postgres_data:
+  media_data:

@@ -1,0 +1,8 @@
+FROM node:15.5.0-buster-slim
+
+EXPOSE 3000
+
+WORKDIR /app 
+
+COPY package.json package-lock.json ./
+RUN npm install

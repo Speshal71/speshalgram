@@ -1,0 +1,11 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "speshalgram.settings.dev"
+
+[tool.black]
+line-length = 80
+include = '\.pyi?$'
+exclude = '/migrations'
+
+[tool.isort]
+profile = "black"
+line_length = 80

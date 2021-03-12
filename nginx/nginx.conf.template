@@ -1,0 +1,47 @@
+upstream backend {
+    server ${BACK_HOST}:${BACK_PORT};
+}
+
+upstream frontend {
+    server ${FRONT_HOST}:${FRONT_PORT};
+}
+
+# user site
+server {
+    listen 80;
+
+    client_max_body_size 8M;
+
+    location /api/ {
+        proxy_pass http://backend;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+    }
+
+    location /media/ {
+        alias /resources/media/;
+    }
+
+    location / {
+        proxy_pass http://frontend;
+    }
+}
+
+# admin site
+server {
+    listen 8000;
+
+    location /admin/ {
+        proxy_pass http://backend;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+    }
+
+    location /static/ {
+        alias /resources/static/;
+    }
+
+    location /media/ {
+        alias /resources/media/;
+    }
+}

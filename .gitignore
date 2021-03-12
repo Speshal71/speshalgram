@@ -1,0 +1,13 @@
+.vscode
+
+# backend
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+
+# frontend
+**/node_modules
+**/build
+**/.eslintcache
+/.pnp
+.pnp.js

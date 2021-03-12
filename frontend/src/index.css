@@ -1,0 +1,40 @@
+.bg-primary-main {
+  background-color: #00897b;
+}
+
+.bg-primary-light {
+  background-color: #4ebaaa;
+}
+
+.btn-dark {
+  background-color: #005b4f;
+}
+
+.btn-transparent {
+  background-color: inherit;
+}
+
+.btn-transparent:hover {
+  background-color: #4ebaaa;
+}
+
+.btn-light {
+  background-color: #4ebaaa;
+}
+
+.btn-light:hover {
+  background-color: #4ebaaa;
+}
+
+a.link-dark {
+  color: white;
+}
+
+a.link-dark.active {
+  color: black;
+}
+
+a.plain-text {
+  color: inherit;
+  text-decoration: none;
+}
